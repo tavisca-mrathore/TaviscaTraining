@@ -1,0 +1,13 @@
+GET /home/ehchua/programming/webprogramming/HTTP_Basics.html HTTP/1.1
+Host: www.ntu.edu.sg
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
+DNT: 1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en;q=0.9
+Cookie: f5_cspm=1234; TS01c5a7cd=017ac8d49dce5775c11a15f9e249d007f80c0e24619a04d5b3cd8c259011e0ddd3d98b33c4e51c7d9089b8ed7ff6afa436909799c47a83dfc6401f11cd250c58c5f3248db1; f5avr0290071348aaaaaaaaaaaaaaaa=HKHKMDBBLPNJAJBPLEFBHJFPDDHFFPKPGIFDACAJMFFNOMOFPMMLILIEKDGPNOOHEFNDIPEFKCFCPAGLFFHNNMMPHCGABPOAHCODOPMLGNAFLEIAAILDDFHOLMOAOJAC
+If-None-Match: "80e2b2aa641ed41:0"
+If-Modified-Since: Wed, 18 Jul 2018 06:58:01 GMT
