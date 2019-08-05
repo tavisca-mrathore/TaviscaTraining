@@ -1,53 +1,68 @@
 ﻿using System;
-using System.IO;
 using System.Net;
-using System.Text;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 
 namespace HTTPWebServerAppliation
 {
+
     class Program
     {
-        static void Main(String[] ar)
+        public static HttpListener listener = new HttpListener();
+        public static string startUpPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static void Main(string[] args)
         {
-
-            string url = "http://localhost:8080/index.html/";
-            HttpListener listener = null;
-
-            string strap = "";
-
-            try
+            listener.Start();
+            listener.Prefixes.Add("http://" + IPAddress.Loopback.ToString() + "/");
+            Thread t = new Thread(new ThreadStart(clientListener));
+            t.Start();
+            Console.Write(">");
+            while (true)
             {
-                listener = new HttpListener();
-                listener.Prefixes.Add(url);
-                listener.Start();
-                while (true)
-                {
-                    Console.WriteLine("Waiting..");
-                    HttpListenerContext context = listener.GetContext();
-                    string msg = "hello";
-
-
-                    context.Response.ContentLength64 = Encoding.UTF8.GetByteCount(msg);
-                    context.Response.StatusCode = (int)HttpStatusCode.OK;
-                    using (Stream stream = context.Response.OutputStream)
-                    {
-                        using (StreamWriter writer = new StreamWriter(stream))
-                        {
-                            writer.Write(msg);
-                        }
-                    }
-                    Console.WriteLine("msg Sent");
-                }
-
-            }
-            catch (WebException e)
-            {
-                Console.WriteLine(e.Status);
+                string s = Console.ReadLine();
+                Console.Write(">");
             }
         }
-
+        public static void clientListener()
+        {
+            while (true)
+            {
+                try
+                {
+                    HttpListenerContext request = listener.GetContext();
+                    ThreadPool.QueueUserWorkItem(processRequest, request);
+                }
+                catch (Exception e) { Console.WriteLine(e.Message); Console.Write(">"); }
+            }
+        }
+        public static void processRequest(object listenerContext)
+        {
+            try
+            {
+                var context = (HttpListenerContext)listenerContext;
+                string filename = Path.GetFileName(context.Request.RawUrl);
+                string path = Path.Combine(startUpPath, filename);
+                byte[] msg;
+                if (!File.Exists(path))
+                {
+                    Console.WriteLine("Client requested nonexistent file, sending error...");
+                    Console.Write(">");
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    msg = File.ReadAllBytes(startUpPath + "\\webroot\\error.html");
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    msg = File.ReadAllBytes(path);
+                }
+                context.Response.ContentLength64 = msg.Length;
+                using (Stream s = context.Response.OutputStream)
+                    s.Write(msg, 0, msg.Length);
+            }
+            catch
+            {
+            }
+        }
     }
 }
-
-
-
