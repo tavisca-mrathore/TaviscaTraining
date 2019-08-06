@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriFibonacciProblem", "TriFibonacci\TriFibonacciProblem.csproj", "{5C15CF4B-8A8D-4067-913A-2B73266F7E95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C15CF4B-8A8D-4067-913A-2B73266F7E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C15CF4B-8A8D-4067-913A-2B73266F7E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C15CF4B-8A8D-4067-913A-2B73266F7E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C15CF4B-8A8D-4067-913A-2B73266F7E95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C95F0D86-364E-4B45-9E90-92103C7CBA4F}
+	EndGlobalSection
+EndGlobal

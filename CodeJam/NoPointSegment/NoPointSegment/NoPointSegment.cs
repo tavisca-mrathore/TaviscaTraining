@@ -57,7 +57,21 @@ namespace NoPointSegmentProblem
                 {
                     result = "NO";
                 }
-                else if (XDistance(P1, P2) + XDistance(Q1, P2) == XDistance(P1, Q1))
+                else if (
+                    (AreSamePoint(P1, P2) && AreSamePoint(Q1, Q2)) &&
+                    (XDistance(P1, Q1) > 0 || XDistance(P2, Q2) > 0 || YDistance(P1, Q1) > 0 || XDistance(Q1, Q2) > 0)
+                    )
+                {
+                    result = "SEGMENT";
+                }
+                else if (AreSamePoint(P1, P2) && AreSamePoint(Q1, Q2))
+                {
+                    result = "POINT";
+                }
+                else if (
+                    (XDistance(P1, P2) + XDistance(Q1, P2) == XDistance(P1, Q1)) ||
+                    (XDistance(P2, P1) + XDistance(Q2, P1) == XDistance(P2, Q2))
+                )
                 {
                     if (AreSamePoint(P1, P2) || AreSamePoint(Q1, P2))
                     {
@@ -68,7 +82,10 @@ namespace NoPointSegmentProblem
                         result = "SEGMENT";
                     }
                 }
-                else if (XDistance(P1, Q2) + XDistance(Q1, Q2) == XDistance(P1, Q1))
+                else if (
+                    (XDistance(P1, Q2) + XDistance(Q1, Q2) == XDistance(P1, Q1)) ||
+                    (XDistance(P2, Q1) + XDistance(Q2, Q1) == XDistance(P2, Q2))
+                    )
                 {
                     if (AreSamePoint(P1, Q2) || AreSamePoint(Q1, Q2))
                     {
@@ -91,7 +108,21 @@ namespace NoPointSegmentProblem
                 {
                     result = "NO";
                 }
-                else if (YDistance(P1, P2) + YDistance(Q1, P2) == YDistance(P1, Q1))
+                else if (
+                   (AreSamePoint(P1, P2) && AreSamePoint(Q1, Q2)) &&
+                   (XDistance(P1, Q1) > 0 || XDistance(P2, Q2) > 0 || YDistance(P1, Q1) > 0 || XDistance(Q1, Q2) > 0)
+                   )
+                {
+                    result = "SEGMENT";
+                }
+                else if (AreSamePoint(P1, P2) && AreSamePoint(Q1, Q2))
+                {
+                    result = "POINT";
+                }
+                else if (
+                    (YDistance(P1, P2) + YDistance(Q1, P2) == YDistance(P1, Q1)) ||
+                    (YDistance(P2, P1) + YDistance(Q2, P1) == YDistance(P2, Q2))
+                )
                 {
                     if (AreSamePoint(P1, P2) || AreSamePoint(Q1, P2))
                     {
@@ -102,7 +133,10 @@ namespace NoPointSegmentProblem
                         result = "SEGMENT";
                     }
                 }
-                else if (YDistance(P1, Q2) + YDistance(Q1, Q2) == YDistance(P1, Q1))
+                else if (
+                    (YDistance(P1, Q2) + YDistance(Q1, Q2) == YDistance(P1, Q1)) ||
+                    (YDistance(P2, Q1) + YDistance(Q2, Q1) == YDistance(P2, Q2))
+                )
                 {
                     if (AreSamePoint(P1, Q2) || AreSamePoint(Q1, Q2))
                     {
@@ -112,6 +146,10 @@ namespace NoPointSegmentProblem
                     {
                         result = "SEGMENT";
                     }
+                }
+                else
+                {
+                    result = "NO";
                 }
             }
             else if (Slope(P1, Q1) == -1 && Slope(P2, Q2) == 0)
@@ -175,7 +213,9 @@ namespace NoPointSegmentProblem
             // test case 6 -> SEGMENT
             Console.WriteLine(solver.Intersection(new int[] { 10, 0, -10, 0 }, new int[] { 5, 0, -5, 0 }));
             // test case 7 -> SEGMENT
-            Console.WriteLine(solver.Intersection(new int[] { 5, 5, 5, 8 }, new int[] { 5, 4, 5, 9 }));
+            Console.WriteLine(solver.Intersection(new int[] { 0, 0, 10, 0 }, new int[] { 10, 0, 0, 0 }));
+            // test case 8 -> SEGMENT
+            Console.WriteLine(solver.Intersection(new int[] { -778, -799, -600, -799 }, new int[] { -778, -799, -600, -799 }));
 
             Console.ReadLine();
         }
