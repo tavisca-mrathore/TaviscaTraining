@@ -4,7 +4,7 @@ namespace TriFibonacciProblem
 {
     class TriFibonacci
     {
-        public bool ValidateFibonacciSequence(int[] test)
+        private bool ValidateFibonacciSequence(int[] test)
         {
             for (int index = 3; index < test.Length; ++index)
             {
@@ -15,14 +15,14 @@ namespace TriFibonacciProblem
             }
             return true;
         }
-        public int Complete(int[] test)
+        private int Complete(int[] test)
         {
             int posIndex = Array.IndexOf(test, -1), result = -1;
             if (posIndex > 2)
             {
                 result = test[posIndex - 1] + test[posIndex - 2] + test[posIndex - 3];
                 test[posIndex] = result;
-                return ValidateFibonacciSequence(test) ? result : -1;
+                return result > 0 && ValidateFibonacciSequence(test) ? result : -1;
             }
             else if (posIndex == 0)
             {
