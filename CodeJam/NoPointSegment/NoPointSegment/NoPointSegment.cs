@@ -12,9 +12,13 @@ namespace NoPointSegmentProblem
                 xCoordinate = x;
                 yCoordinate = y;
             }
-            static bool AreSamePoint(Point A, Point B)
+            public static int XDistance(Point pointA, Point pointB)
             {
-                return (A.xCoordinate == B.xCoordinate && A.yCoordinate == B.yCoordinate) ? true : false;
+                return Math.Abs(pointA.xCoordinate - pointB.xCoordinate);
+            }
+            public static int YDistance(Point pointA, Point pointB)
+            {
+                return Math.Abs(pointA.yCoordinate - pointB.yCoordinate);
             }
         }
         class Segment
@@ -22,20 +26,53 @@ namespace NoPointSegmentProblem
             public Point pointA, pointB;
             public Segment(int x1, int y1, int x2, int y2)
             {
-                pointA = new Point(x1, y1);
-                pointB = new Point(x2, y2);
+                pointA = new Point(
+                                x1 > x2 ? x2 : x1,
+                                y1 > y2 ? y2 : y1
+                            );
+                pointB = new Point(
+                                x1 > x2 ? x1 : x2,
+                                y1 > y2 ? y1 : y2
+                            );
             }
-            private int Slope()
+            public int Slope()
             {
                 return pointB.xCoordinate - pointA.xCoordinate == 0 ? -1 : 0;
             }
-            private int XDistance()
+            public bool HasLength()
             {
-                return Math.Abs(pointA.xCoordinate - pointB.xCoordinate);
+                return (int)Math.Sqrt(
+                    Math.Pow(pointA.xCoordinate - pointB.xCoordinate, 2) +
+                    Math.Pow(pointA.xCoordinate - pointB.xCoordinate, 2)
+                    ) > 0;
             }
-            private int YDistance()
+            public bool HasPointOnX(Point point)
             {
-                return Math.Abs(pointA.yCoordinate - pointB.yCoordinate);
+                return (
+                    point.xCoordinate >= this.pointA.xCoordinate &&
+                    point.xCoordinate <= this.pointB.xCoordinate
+                );
+            }
+            public bool HasPointOnY(Point point)
+            {
+                return (
+                    point.yCoordinate >= this.pointA.yCoordinate &&
+                    point.yCoordinate <= this.pointB.yCoordinate
+                );
+            }
+            public bool HasPointBetweenXEndpoints(Point point)
+            {
+                return (
+                    point.xCoordinate >= this.pointA.xCoordinate &&
+                    point.xCoordinate <= this.pointB.xCoordinate
+                );
+            }
+            public bool HasPointBetweenYEndpoints(Point point)
+            {
+                return (
+                    point.yCoordinate >= this.pointA.yCoordinate &&
+                    point.yCoordinate <= this.pointB.yCoordinate
+                );
             }
         }
         public string Intersection(int[] seg1, int[] seg2)
@@ -43,8 +80,122 @@ namespace NoPointSegmentProblem
             Segment segment1 = new Segment(seg1[0], seg1[1], seg1[2], seg1[3]);
             Segment segment2 = new Segment(seg2[0], seg2[1], seg2[2], seg2[3]);
 
-            string result = "-";
-            return result;
+            if (segment1.Slope() == segment2.Slope())// || to x-axis or y-axis
+            {
+                if (segment1.Slope() == 0)// || to x-axis
+                {
+                    if (Point.YDistance(segment1.pointA, segment2.pointA) == 0)// both on same line
+                    {
+                        if (!segment1.HasLength() && !segment2.HasLength())// point - point case
+                        {
+                            return Point.XDistance(segment1.pointA, segment2.pointA) == 0 ? "POINT" : "NO";
+                        }
+                        else if (segment1.HasLength() && !segment2.HasLength())// segment - point case
+                        {
+                            return segment1.HasPointOnX(segment2.pointA) ? "POINT" : "NO";
+                        }
+                        else if (!segment1.HasLength() && segment2.HasLength())// point - segment case
+                        {
+                            return segment2.HasPointOnX(segment1.pointA) ? "POINT" : "NO";
+                        }
+                        else// segment - segment case
+                        {
+                            if (segment1.pointA.xCoordinate < segment2.pointA.xCoordinate)// segment 1 is before segemnt 2
+                            {
+                                if (segment1.pointB.xCoordinate < segment2.pointA.xCoordinate)// no common segments
+                                {
+                                    return "NO";
+                                }
+                                else
+                                {
+                                    return segment1.pointB.xCoordinate == segment2.pointA.xCoordinate ? "POINT" : "SEGMENT";
+                                }
+                            }
+                            else// segment 2 is before segemnt 2
+                            {
+                                if (segment2.pointB.xCoordinate < segment1.pointA.xCoordinate)// no common segments
+                                {
+                                    return "NO";
+                                }
+                                else
+                                {
+                                    return segment2.pointB.xCoordinate == segment1.pointA.xCoordinate ? "POINT" : "SEGMENT";
+                                }
+                            }
+                        }
+                    }
+                    else// parallel lines
+                    {
+                        return "NO";
+                    }
+                }
+                else// || to y-axis
+                {
+                    if (Point.XDistance(segment1.pointA, segment2.pointA) == 0)// both on same line
+                    {
+                        if (!segment1.HasLength() && !segment2.HasLength())// point - point case
+                        {
+                            return Point.YDistance(segment1.pointA, segment2.pointA) == 0 ? "POINT" : "NO";
+                        }
+                        else if (segment1.HasLength() && !segment2.HasLength())// segment - point case
+                        {
+                            return segment1.HasPointOnY(segment2.pointA) ? "POINT" : "NO";
+                        }
+                        else if (!segment1.HasLength() && segment2.HasLength())// point - segment case
+                        {
+                            return segment2.HasPointOnY(segment1.pointA) ? "POINT" : "NO";
+                        }
+                        else// segment - segment case
+                        {
+                            if (segment1.pointA.yCoordinate < segment2.pointA.yCoordinate)// segment 1 is before segemnt 2
+                            {
+                                if (segment1.pointB.yCoordinate < segment2.pointA.yCoordinate)// no common segments
+                                {
+                                    return "NO";
+                                }
+                                else
+                                {
+                                    return segment1.pointB.yCoordinate == segment2.pointA.yCoordinate ? "POINT" : "SEGMENT";
+                                }
+                            }
+                            else// segment 2 is before segemnt 2
+                            {
+                                if (segment2.pointB.yCoordinate < segment1.pointA.yCoordinate)// no common segments
+                                {
+                                    return "NO";
+                                }
+                                else
+                                {
+                                    return segment2.pointB.yCoordinate == segment1.pointA.yCoordinate ? "POINT" : "SEGMENT";
+                                }
+                            }
+                        }
+                    }
+                    else// parallel lines
+                    {
+                        return "NO";
+                    }
+                }
+            }
+            else// intersection possible
+            {
+                if (segment1.Slope() == -1)// segment1 || to y-axis and segment2 || to x-axis
+                {
+                    return (
+                        segment1.HasPointBetweenYEndpoints(segment2.pointA) &&
+                        segment2.HasPointBetweenXEndpoints(segment1.pointA)
+                        ? "POINT" : "NO"
+                    );
+                }
+                else// segment1 || to x-axis and segment2 || to y-axis
+                {
+                    return (
+                        segment2.HasPointBetweenYEndpoints(segment1.pointA) &&
+                        segment1.HasPointBetweenXEndpoints(segment2.pointA)
+                        ? "POINT" : "NO"
+                    );
+                }
+            }
         }
 
         #region Testing code Do not change
