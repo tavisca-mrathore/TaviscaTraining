@@ -26,14 +26,37 @@ namespace NoPointSegmentProblem
             public Point pointA, pointB;
             public Segment(int x1, int y1, int x2, int y2)
             {
-                pointA = new Point(
-                                x1 > x2 ? x2 : x1,
-                                y1 > y2 ? y2 : y1
-                            );
-                pointB = new Point(
-                                x1 > x2 ? x1 : x2,
-                                y1 > y2 ? y1 : y2
-                            );
+                if (x1 == x2)// || to x-axis
+                {
+                    if (y1 < y2)// y1 below y2
+                    {
+                        pointA = new Point(x1, y1);
+                        pointB = new Point(x2, y2);
+                    }
+                    else// y2 below y1
+                    {
+                        pointA = new Point(x2, y2);
+                        pointB = new Point(x1, y1);
+                    }
+                }
+                else if (y1 == y2)// || to y-axis
+                {
+                    if (x1 < x2)// x1 before x2
+                    {
+                        pointA = new Point(x1, y1);
+                        pointB = new Point(x2, y2);
+                    }
+                    else// x2 before x1
+                    {
+                        pointA = new Point(x2, y2);
+                        pointB = new Point(x1, y1);
+                    }
+                }
+            }
+            private int[] GetPrevNextPoint()
+            {
+                int[] arr = new int[2];
+                return arr;
             }
             public int Slope()
             {
@@ -43,7 +66,7 @@ namespace NoPointSegmentProblem
             {
                 return (int)Math.Sqrt(
                     Math.Pow(pointA.xCoordinate - pointB.xCoordinate, 2) +
-                    Math.Pow(pointA.xCoordinate - pointB.xCoordinate, 2)
+                    Math.Pow(pointA.yCoordinate - pointB.yCoordinate, 2)
                     ) > 0;
             }
             public bool HasPointOnX(Point point)
