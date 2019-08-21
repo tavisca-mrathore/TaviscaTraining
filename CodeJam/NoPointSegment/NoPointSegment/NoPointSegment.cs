@@ -53,11 +53,6 @@ namespace NoPointSegmentProblem
                     }
                 }
             }
-            private int[] GetPrevNextPoint()
-            {
-                int[] arr = new int[2];
-                return arr;
-            }
             public int Slope()
             {
                 return pointB.xCoordinate - pointA.xCoordinate == 0 ? -1 : 0;

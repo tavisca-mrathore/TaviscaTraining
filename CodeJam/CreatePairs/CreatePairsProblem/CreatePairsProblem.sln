@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreatePairsProblem", "CreatePairsProblem\CreatePairsProblem.csproj", "{381FADD9-A934-44A6-AA76-D0BA4B84C491}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{381FADD9-A934-44A6-AA76-D0BA4B84C491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381FADD9-A934-44A6-AA76-D0BA4B84C491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381FADD9-A934-44A6-AA76-D0BA4B84C491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381FADD9-A934-44A6-AA76-D0BA4B84C491}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14F72FF4-B9AC-4B75-A040-93918A60EA82}
+	EndGlobalSection
+EndGlobal

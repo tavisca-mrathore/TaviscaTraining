@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>To Do List</title>
+</head>
+
+<body>
+    <header>HEADER</header>
+
+    <div id="content">
+        <div id="menu">
+            <p id="search-data-wrapper" onclick="ShowClickedSection(event);">Search List</p>
+            <p id="item-2-wrapper" onclick="ShowClickedSection(event);">Item 2</p>
+            <p id="item-3-wrapper" onclick="ShowClickedSection(event);">Item 3</p>
+        </div>
+        <div id="search-data-wrapper" class="hide-section">
+            <div id="search-container">
+                <input list="list" type="text" id="input" onkeydown="return SearchItem();" placeholder="search">
+                <button onclick="return AddItem();">Add</button>
+                <div id="search-list"></div>
+            </div>
+            <ul id="autopopulate-div-ul"></ul>
+        </div>
+        <div id="item-2-wrapper" class="hide-section">
+            <p>Item 2 Content</p>
+        </div>
+        <div id="item-3-wrapper" class="hide-section">
+            <p>Item 3 Content</p>
+        </div>
+    </div>
+
+    <footer>FOOTER</footer>
+
+    <script type="text/javascript" src="AutopopulateData.js"></script>
+    <script type="text/javascript" src="Script.js"></script>
+
+</body>
+
+</html>
