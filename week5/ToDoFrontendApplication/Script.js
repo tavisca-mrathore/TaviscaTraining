@@ -1,5 +1,5 @@
 window.onload = function () {
-    SetAutopopulateDataInDom();
+    SetAutopopulateDataInDOM();
     ShowRequiredSection();
 }
 
@@ -15,7 +15,7 @@ function ShowRequiredSection(requiredId = "search-data-wrapper") {
     ClearSearch();
 }
 
-function SetAutopopulateDataInDom() {
+function SetAutopopulateDataInDOM() {
     for (let index = 0; index < AutopopulateData.length; ++index) {
         let node = document.createElement("li");
         let textnode = document.createTextNode(
@@ -42,6 +42,10 @@ function ClearSearch() {
 
 function AddItem() {
     let input = document.getElementById("input");
+    if (input.value == "") {
+        alert("Can't enter empty entry.");
+        return;
+    }
     let node = document.createElement("li");
     let nodeItem = document.createTextNode(input.value);
     node.appendChild(nodeItem);
@@ -57,31 +61,22 @@ function AddItem() {
 function RemoveSearchFromHTMLDOM() {
     const previousSearchList = document.getElementById("search-list");
     while (previousSearchList.firstChild) {
-        // console.log("removed:\t" + previousSearchList.firstChild);
         previousSearchList.removeChild(previousSearchList.firstChild);
     }
 }
 
 function SearchItem() {
     let input = document.getElementById("input");
-    let searchResults = [];
+
+    RemoveSearchFromHTMLDOM();
 
     // get results array
     for (let index = 0; index < AutopopulateData.length; ++index) {
         let foundIndex = AutopopulateData[index].title.search(input.value);
-        if (foundIndex > 0) {
-            searchResults.push(AutopopulateData[index]);
-        }
-    }
-
-    RemoveSearchFromHTMLDOM();
-
-    // set results to html dom
-    for (let index = 0; index < 5; ++index) {
-        if (searchResults.length > index) {
+        if (foundIndex > 0) {// set results to html dom
             let node = document.createElement("p");
             let textnode = document.createTextNode(
-                searchResults[index].title
+                AutopopulateData[index].title
             );
             node.appendChild(textnode);
             document.getElementById("search-list").appendChild(node);
