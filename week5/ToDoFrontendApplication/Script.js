@@ -1,3 +1,5 @@
+let canEditMutex = true;
+
 window.onload = function () {
     AutoPopulateDataInTable();
     ShowRequiredSection();
@@ -31,6 +33,8 @@ function AddTableRow(dataToBeAdded, index) {
     let tableRowEditBtn = document.createElement('button');
     tableRowEditBtn.className = "edit-btn";
     tableRowEditBtn.innerHTML = "Edit";
+    tableRowEditBtn.setAttribute("onclick", "EditRow(event);");
+    tableRowEditBtn.setAttribute("id", "edit-" + index);
     tableColumn2.appendChild(tableRowEditBtn);
 
     // add delete button
@@ -49,29 +53,135 @@ function AutoPopulateDataInTable() {
     }
 }
 
-function DeleteRow(event) {
-    event = event || window.event;
-    let target = event.target || event.srcElement;
-
-    let e = document.getElementById("autopopulate-table");
-    let first = e.firstElementChild;
-    while (first) {
-        first.remove();
-        first = e.firstElementChild;
-    }
-
-    AutopopulateData.splice(
-        parseInt(target.id.substring(7)), 1
-    );
-    AutoPopulateDataInTable();
-}
-
-function ShowClickedSection(event) {
+function GetTarget(event) {
     // IE does not know about the target attribute. It looks for srcElement
     // This function will get the event target in a browser-compatible way
     event = event || window.event;
-    let target = event.target || event.srcElement;
+    return event.target || event.srcElement;
+}
 
+function RenderUpdatedData(updatedData) {
+    // add first column
+    let targetRowElement;
+    if (updatedData.firstColumnElement) {
+        targetRowElement = document.createElement(updatedData.firstColumnElement);
+        targetRowElement.setAttribute("value", updatedData.textData);
+    } else {
+        targetRowElement = document.createTextNode(updatedData.textData);
+    }
+
+    // add first button
+    let targetRowUpdateButton = document.createElement('button');
+    targetRowUpdateButton.innerHTML = updatedData.secondButtonHtml;
+    targetRowUpdateButton.setAttribute("onclick", updatedData.secondButtonFunction);
+    targetRowUpdateButton.setAttribute(
+        "id", updatedData.secondButtonHtml.toLowerCase() + "-" + updatedData.id
+    );
+
+    // add second button
+    let targetRowCancelButton = document.createElement('button');
+    targetRowCancelButton.innerHTML = updatedData.thirdButtonHtml;
+    targetRowCancelButton.setAttribute("onclick", updatedData.thirdButtonFunction);
+    targetRowCancelButton.setAttribute(
+        "id", updatedData.thirdButtonHtml.toLowerCase() + "-" + updatedData.id
+    );
+
+    for (let index = 0; index < 3; ++index) {
+        updatedData.targetRow.deleteCell(0);
+    }
+
+    let tableColumn1 = updatedData.targetRow.insertCell(0);
+    tableColumn1.appendChild(targetRowElement);
+
+    let tableColumn2 = updatedData.targetRow.insertCell(1);
+    tableColumn2.appendChild(targetRowUpdateButton);
+
+    let tableColumn3 = updatedData.targetRow.insertCell(2);
+    tableColumn3.appendChild(targetRowCancelButton);
+}
+
+function CancelUpdateRow(event) {
+    let target = GetTarget(event);
+
+    // to get row-id after "cancel-" in button's id
+    let targetRowId = target.id.substring(7);
+    let targetRow = document.getElementById(targetRowId);
+
+    RenderUpdatedData({
+        "targetRow": targetRow,
+        "id": targetRowId,
+        "secondButtonHtml": "Edit",
+        "thirdButtonHtml": "Delete",
+        "secondButtonFunction": "EditRow(event);",
+        "thirdButtonFunction": "DeleteRow(event);",
+        "textData": targetRow.childNodes[0].childNodes[0].value,
+    });
+    canEditMutex = true;
+}
+
+function UpdateRow(event) {
+    let target = GetTarget(event);
+
+    // to get row-id after "update-" in button's id
+    let targetRowId = target.id.substring(7);
+    let targetRow = document.getElementById(targetRowId);
+
+    RenderUpdatedData({
+        "targetRow": targetRow,
+        "id": targetRowId,
+        "secondButtonHtml": "Edit",
+        "thirdButtonHtml": "Delete",
+        "secondButtonFunction": "EditRow(event);",
+        "thirdButtonFunction": "DeleteRow(event);",
+        "textData": targetRow.childNodes[0].childNodes[0].value,
+    });
+    canEditMutex = true;
+}
+
+function EditRow(event) {
+    let target = GetTarget(event);
+    if (canEditMutex) {
+        canEditMutex = false;
+        // to get row-id after "edit-" in button's id
+        let targetRowId = target.id.substring(5);
+        let targetRow = document.getElementById(targetRowId);
+
+        RenderUpdatedData({
+            "targetRow": targetRow,
+            "id": targetRowId,
+            "firstColumnElement": "input",
+            "secondButtonHtml": "Update",
+            "thirdButtonHtml": "Cancel",
+            "secondButtonFunction": "UpdateRow(event);",
+            "thirdButtonFunction": "CancelUpdateRow(event);",
+            "textData": targetRow.childNodes[0].innerText,
+        });
+    } else {
+        alert("can't edit more than one record at a time");
+    }
+}
+
+function DeleteRow(event) {
+    if (canEditMutex) {
+        let e = document.getElementById("autopopulate-table");
+        let first = e.firstElementChild;
+        while (first) {
+            first.remove();
+            first = e.firstElementChild;
+        }
+
+        let target = GetTarget(event);
+        AutopopulateData.splice(
+            parseInt(target.id.substring(7)), 1
+        );
+        AutoPopulateDataInTable();
+    } else {
+        alert("can't delete record while editing");
+    }
+}
+
+function ShowClickedSection(event) {
+    let target = GetTarget(event);
     ShowRequiredSection(target.id);
 }
 
@@ -110,7 +220,7 @@ function SearchItem() {
     // get results array
     for (let index = 0; index < AutopopulateData.length; ++index) {
         let foundIndex = AutopopulateData[index].title.search(input.value);
-        if (foundIndex > 0) {// set results to html dom
+        if (foundIndex != -1 && input.value != "") {// set results to html dom
             let node = document.createElement("p");
             let textnode = document.createTextNode(
                 AutopopulateData[index].title

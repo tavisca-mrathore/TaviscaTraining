@@ -51,6 +51,7 @@ header {
 #content>#search-data-wrapper>#autopopulate-table>tbody>tr>td {
     border: 1px solid #000;
     padding: 4px;
+    width: 100%;
 }
 
 #content>#search-data-wrapper>#search-container>#search-list {
@@ -64,6 +65,10 @@ header {
     border: 1px solid #000000;
     margin: 0px;
     padding: 5px;
+}
+
+.input-field {
+    width: 100%;
 }
 
 footer {

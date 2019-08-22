@@ -17,7 +17,8 @@
         </div>
         <div id="search-data-wrapper" class="hide-section">
             <div id="search-container">
-                <input list="list" type="text" id="input" onkeyup="return SearchItem();" placeholder="search">
+                <input list="list" type="text" id="input" onkeyup="return SearchItem();"
+                    onblur="return RemoveSearchFromHTMLDOM();" placeholder="search">
                 <button onclick="return AddItem();">Add</button>
                 <div id="search-list"></div>
             </div>
