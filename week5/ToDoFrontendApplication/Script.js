@@ -1,8 +1,9 @@
-let canEditMutex = true;
+let canEditMutex, currentTextData;
 
 window.onload = function () {
     AutoPopulateDataInTable();
     ShowRequiredSection();
+    canEditMutex = true;
 }
 
 function ShowRequiredSection(requiredId = "search-data-wrapper") {
@@ -66,6 +67,7 @@ function RenderUpdatedData(updatedData) {
     if (updatedData.firstColumnElement) {
         targetRowElement = document.createElement(updatedData.firstColumnElement);
         targetRowElement.setAttribute("value", updatedData.textData);
+        targetRowElement.setAttribute("class", updatedData.firstColumnElement + "-field");
     } else {
         targetRowElement = document.createTextNode(updatedData.textData);
     }
@@ -114,7 +116,7 @@ function CancelUpdateRow(event) {
         "thirdButtonHtml": "Delete",
         "secondButtonFunction": "EditRow(event);",
         "thirdButtonFunction": "DeleteRow(event);",
-        "textData": targetRow.childNodes[0].childNodes[0].value,
+        "textData": currentTextData,
     });
     canEditMutex = true;
 }
@@ -140,11 +142,13 @@ function UpdateRow(event) {
 
 function EditRow(event) {
     let target = GetTarget(event);
+
     if (canEditMutex) {
         canEditMutex = false;
         // to get row-id after "edit-" in button's id
         let targetRowId = target.id.substring(5);
         let targetRow = document.getElementById(targetRowId);
+        currentTextData = targetRow.childNodes[0].innerText;
 
         RenderUpdatedData({
             "targetRow": targetRow,
@@ -196,6 +200,15 @@ function AddItem() {
         alert("Can't enter empty entry.");
         return;
     }
+
+    for (let index = 0; index < AutopopulateData.length; ++index) {
+        let foundIndex = AutopopulateData[index].title.toLowerCase().search(input.value.toLowerCase());
+        if (foundIndex != -1) {// set results to html dom
+            alert("Item already exist");
+            return;
+        }
+    }
+
     AddTableRow(input.value, AutopopulateData.length);
     AutopopulateData.push(
         {
@@ -212,6 +225,13 @@ function RemoveSearchFromHTMLDOM() {
     }
 }
 
+function PopulateSearchBar(event) {
+    RemoveSearchFromHTMLDOM();
+    let target = GetTarget(event);
+    document.getElementById("input").value =
+        document.getElementById(target.id.substring(7)).childNodes[0].innerHTML;
+}
+
 function SearchItem() {
     let input = document.getElementById("input");
 
@@ -219,9 +239,12 @@ function SearchItem() {
 
     // get results array
     for (let index = 0; index < AutopopulateData.length; ++index) {
-        let foundIndex = AutopopulateData[index].title.search(input.value);
+        let foundIndex = AutopopulateData[index].title.toLowerCase().search(input.value.toLowerCase());
         if (foundIndex != -1 && input.value != "") {// set results to html dom
             let node = document.createElement("p");
+            node.setAttribute("id", "search-" + index);
+            node.setAttribute("onclick", "PopulateSearchBar(event);");
+            node.setAttribute("data-hidden", AutopopulateData[index].title);
             let textnode = document.createTextNode(
                 AutopopulateData[index].title
             );
