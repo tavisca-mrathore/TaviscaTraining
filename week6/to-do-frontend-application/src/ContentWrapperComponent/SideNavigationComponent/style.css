@@ -1,0 +1,12 @@
+#sidenav-listing-contaier {
+    float: left;
+    width: 20%;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+}
+
+#sidenav-listing-contaier>p {
+    border: 1px solid #000000;
+    padding: 2px;
+    margin: 0px;
+}
