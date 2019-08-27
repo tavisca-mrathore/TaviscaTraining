@@ -1,22 +1,19 @@
 ﻿using BenchmarkDotNet.Attributes;
 
-namespace BenchmarkDotNetSampleProblem
+namespace DotnetBenchmarkSample
 {
-    public class ForLoopBenchmarkClass
+    public class LoopClass
     {
         [Benchmark]
         public void ForLoopBenchmark()
         {
-            int[] arr = new int[10000];
+            int[] arr = new int[1000];
             for (int i = 0; i < arr.Length; i++) { }
         }
-    }
-    public class ForEachLoopBenchmarkClass
-    {
         [Benchmark]
         public void ForEachLoopBenchmark()
         {
-            int[] arr = new int[10000];
+            int[] arr = new int[1000];
             foreach (var i in arr) { }
         }
     }
