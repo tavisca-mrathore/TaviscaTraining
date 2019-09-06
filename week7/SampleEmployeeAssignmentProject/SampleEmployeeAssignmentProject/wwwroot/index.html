@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Sample Manager Application</title>
+    <script src="scripts/managerData.js"></script>
+    <script src="scripts/managerDataUsingId.js"></script>
+    <script src="scripts/employeeDataUsingManagerId.js"></script>
+    <style>
+        .div-class {
+            border: 1px solid #000000;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="manager-data" class="div-class">
+        <h1>Get all Manager Data</h1>
+        <input id="manager-data-btn" type="button" value="Get Data" />
+        <input id="manager-data-btn-clear" type="button" value="Clear" />
+        <ul id="manager-data-list"></ul>
+    </div>
+
+    <div id="manager-id-data" class="div-class">
+        <h1>Get Manager using id</h1>
+        <input id="manager-id" type="text" placeholder="Enter Manager Id" />
+        <input id="manager-id-data-btn" type="button" value="Get Data" />
+        <input id="manager-id-data-btn-clear" type="button" value="Clear" />
+        <ul id="manager-id-data-list"></ul>
+    </div>
+
+    <div id="employees-of-manager-data" class="div-class">
+        <h1>Get all Employees of specific manager</h1>
+        <input id="employees-of-manager" type="text" placeholder="Enter Manager Id" />
+        <input id="employees-of-manager-data-btn" type="button" value="Get Data" />
+        <input id="employees-of-manager-data-btn-clear" type="button" value="Clear" />
+        <ul id="employees-of-manager-data-list"></ul>
+    </div>
+</body>
+</html>
