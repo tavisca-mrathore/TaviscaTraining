@@ -1,0 +1,24 @@
+<app-navigation-bar></app-navigation-bar>
+
+<p [style.colour]="color">First Name: {{ fName }}</p>
+<p>Last Name: {{ lName }}</p>
+
+<input type="text" [disabled]="isDisabled" placeholder="Click toggle btn to toggle me" />
+<input type="button" (click)="toggleButton()" value="Toggle Input" /><br /><br />
+
+<label>First Name: </label>
+<input type="text" [(ngModel)]="fName" placeholder="fName" /><br />
+
+<label>Last Name: </label>
+<input type="text" [(ngModel)]="lName" placeholder="lName" /><br /><br />
+
+<label>Gender:</label>
+<input type="radio" [(ngModel)]="userGender" [value]="0" />Male
+<input type="radio" [(ngModel)]="userGender" [value]="1" />Female
+
+<select [(ngModel)]="selectedCountry">
+    <option value="0">India</option>
+    <option value="1">U.S.A</option>
+    <option value="2">France</option>
+    <option value="3">Italy</option>
+</select>
