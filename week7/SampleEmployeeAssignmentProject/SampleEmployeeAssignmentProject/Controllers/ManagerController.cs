@@ -7,31 +7,32 @@ namespace SampleEmployeeAssignmentProject.Controllers
     [ApiController]
     public class ManagerController : ControllerBase
     {
-        List<ManagerData> manager_list = new List<ManagerData>();
 
-        public class EmployeeData
+        public class Employee
         {
             public int managerId;
             public int id;
             public string name;
         }
 
-        public class ManagerData
+        public class Manager
         {
             public int id;
             public string name;
-            public EmployeeData empDetails;
+            public Employee empDetails;
         }
+
+        List<Manager> manager_list = new List<Manager>();
 
         public ManagerController()
         {
             for (int index = 0; index < 10; ++index)
             {
-                manager_list.Add(new ManagerData()
+                manager_list.Add(new Manager()
                 {
                     id = index,
                     name = "generic manager name " + index,
-                    empDetails = new EmployeeData()
+                    empDetails = new Employee()
                     {
                         managerId = index,
                         id = 100 + index,
@@ -43,14 +44,14 @@ namespace SampleEmployeeAssignmentProject.Controllers
 
         // GET manager/
         [HttpGet]
-        public List<ManagerData> Get()
+        public List<Manager> Get()
         {
             return this.manager_list;
         }
 
         // GET manager/{id}
         [HttpGet("{id}")]
-        public ManagerData Get(int id)
+        public Manager Get(int id)
         {
             for (int index = 0; index < 10; ++index)
             {
@@ -60,6 +61,24 @@ namespace SampleEmployeeAssignmentProject.Controllers
                 }
             }
             return null;
+        }
+
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Manager empData)
+        {
+            manager_list.Add(new Manager
+            {
+                id = empData.id,
+                name = empData.name,
+                empDetails = new Employee()
+                {
+                    managerId = empData.empDetails.managerId,
+                    id = empData.empDetails.id,
+                    name = empData.empDetails.name
+                }
+            });
+            return Ok(empData);
         }
     }
 }
