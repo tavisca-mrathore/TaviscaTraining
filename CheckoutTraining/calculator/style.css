@@ -1,0 +1,23 @@
+.calculator-container {
+    border: 2px solid #000;
+    height: 200px;
+    width: 200px;
+    margin: 5px;
+}
+
+.calculator-input {
+    width: 196px;
+}
+
+.calculator-btn {
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+.calculator-btn:hover {
+    cursor: pointer;
+}
+
+tbody {
+    width: 196px;
+}
