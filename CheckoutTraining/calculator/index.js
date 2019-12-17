@@ -10,8 +10,10 @@ class Calculator {
     ]
 
     constructor() {
+        // this.countInst = Calculator.count;
         this.calculatorInstanceNumber = Calculator.count;
         this.calculateString = "";
+        this.random = 9;
         this.renderCalculator();
         ++Calculator.count;
     }
@@ -68,7 +70,7 @@ class Calculator {
                 td.setAttributeNode(att);
 
                 // set function binding
-                td.onclick = this.calculate;
+                td.onclick = this.calculate(this);
 
                 tr.appendChild(td);
             }
@@ -77,24 +79,26 @@ class Calculator {
         tbl.appendChild(tbdy);
         parentElement.appendChild(tbl)
     }
-    calculate(event) {
-        let clickedButtonValue = event.srcElement.innerHTML;
-        // let inputElement = document.getElementById(`calculator-input-field-${this.calculatorInstanceNumber}`);
+    calculate(obj) {
+        console.log(obj.calculatorInstanceNumber)
+        // let clickedButtonValue = event.srcElement.innerHTML;
+        // let inputElement2 = document.getElementById(`calculator-input-field-${this.calculatorInstanceNumber}`);
 
-        let inputElementId = event.srcElement.parentElement.parentElement.parentElement.parentElement.firstChild.id;
-        let inputElement = document.getElementById(inputElementId);
+        // let inputElementId = event.srcElement.parentElement.parentElement.parentElement.parentElement.firstChild.id;
+        // let inputElement = document.getElementById(inputElementId);
 
-        console.log(this.calculatorInstanceNumber);
+        // console.log(this.calculatorInstanceNumber);
 
-        if (clickedButtonValue == "=") {
-            inputElement.value = eval(inputElement.value);
-            this.calculateString = "=";
-        } else {
-            this.calculateString = inputElement.value.concat(clickedButtonValue);
-            inputElement.value = this.calculateString;
-        }
+        // if (clickedButtonValue == "=") {
+        //     inputElement.value = eval(inputElement.value);
+        //     this.calculateString = "=";
+        // } else {
+        //     this.calculateString = inputElement.value.concat(clickedButtonValue);
+        //     inputElement.value = this.calculateString;
+        // }
     }
 }
 
 let calc1 = new Calculator();
 let calc2 = new Calculator();
+console.log(calc1.random);
